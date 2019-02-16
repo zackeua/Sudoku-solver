@@ -395,22 +395,22 @@ public class Sudoku {
 
 
         //Sudoku sol = new Sudoku(GRID1_SOLUTION);
-        //Sudoku foo = new Sudoku(GRID2_TO_SOLVE);
+        Sudoku foo = new Sudoku(GRID2_TO_SOLVE);
         
-        Sudoku foo1 = new Sudoku(EVAL1);
+        //Sudoku foo1 = new Sudoku(EVAL1);
         
         //System.out.println(sol.toString());
-        //System.out.print(foo.toString());
-        System.out.println(foo1.toString());
+        System.out.print(foo.toString());
+        //System.out.println(foo1.toString());
 
-        //Sudoku solved = solve(foo);
-        Sudoku solved1 = solve(foo1);
+        Sudoku solved = solve(foo);
+        //Sudoku solved1 = solve(foo1);
         
         System.out.println("Solution:");
 
-        //System.out.print(solved.toString());
-        System.out.println(solved1.toString());
+        System.out.print(solved.toString());
+        //System.out.println(solved1.toString());
         //System.out.println(sol.solved());
-        //System.out.println(foo.solved());
+        System.out.println(foo.solved());
     }
 }

@@ -15,9 +15,6 @@
  */
 public class Sudoku {
 
-
-
-
     public static int[][] GRID_TO_SOLVE = {
         {9,0,0,1,0,0,0,0,5},
         {0,0,5,0,9,0,2,0,1},
@@ -44,7 +41,7 @@ public class Sudoku {
 
 
     public static int[][] GRID1_TO_SOLVE = {
-        {7,3,5,6,1,4,8,9,2},
+        {0,0,0,0,0,0,0,0,0},
         {8,4,2,9,7,3,5,6,1},
         {9,6,1,2,8,5,3,7,4},
         {2,8,6,3,4,9,1,5,7},
@@ -67,7 +64,18 @@ public class Sudoku {
         {0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0},
     };
-
+    
+    public static int[][] EVAL1 = {
+        {1,2,3,4,5,6,7,8,9},
+        {4,5,6,1,2,3,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+    };
 
 
     private int[][] grid;
@@ -94,15 +102,15 @@ public class Sudoku {
     * @param number numret som ska kontrolleras för insättning i elementet
     * @return boolean true om legalt, false om ej.
     */
-    private boolean legalNumberInRow(int xIndex, int yIndex, int number) {
+    public boolean legalNumberInRow(int xIndex, int yIndex, int number) {
         for (int i = 0; i < SIZE; i++) {
             if (i == yIndex) {
                 i++;
-            } else if (this.isInRow(xIndex, number)) {
-                return true;
+            } else if (this.grid[xIndex][i] == number) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -113,13 +121,11 @@ public class Sudoku {
      * @param number numret som ska kontrolleras för insättning i elementet
      * @return boolean true om legalt, false om ej.
      */
-    private boolean legalNumberInCol(int xIndex, int yIndex, int number) {
+    public boolean legalNumberInCol(int xIndex, int yIndex, int number) {
         for (int i = 0; i < SIZE; i++) {
             if (i == xIndex) {
                 i++;
-            }
-
-            if (this.isInCol(yIndex, number)) {
+            } else if (this.grid[i][yIndex] == number) {
                 return false;
             }
         }
@@ -134,7 +140,7 @@ public class Sudoku {
      * @param number numret som ska kontrolleras för insättning i elementet
      * @return boolean true om legalt, false om ej.
      */
-    private boolean legalNumberInBox(int xIndex, int yIndex, int number) {
+    public boolean legalNumberInBox(int xIndex, int yIndex, int number) {
         int xBox = (int)(xIndex / BOX_SIZE);
         int yBox = (int)(yIndex / BOX_SIZE);
 
@@ -142,8 +148,7 @@ public class Sudoku {
             for (int j = BOX_SIZE*yBox; j < yBox + BOX_SIZE; j++){
                 if (i == xIndex && j == yIndex) {
                     j++;
-                }
-                 if (this.isInBox(xIndex, yIndex, number)) {
+                } else if (this.grid[i][j] == number) {
                     return false;
                 }
             }
@@ -159,7 +164,7 @@ public class Sudoku {
      * @param number värdet som ska kontrolleras
      * @return boolean true om element finns på raden, false om ej.
      */
-    private boolean isInRow(int xIndex, int number) {
+    public boolean isInRow(int xIndex, int number) {
         for (int i = 0; i < SIZE; i++) {
             if (this.grid[xIndex][i] == number) {
                 return true;
@@ -191,7 +196,7 @@ public class Sudoku {
      * @param number värdet som ska kontrolleras
      * @return boolean true om element finns i boxen, false om ej.
      */
-    private boolean isInBox(int xIndex, int yIndex, int number) {
+    public boolean isInBox(int xIndex, int yIndex, int number) {
         int xBox = (int)(xIndex / BOX_SIZE);
         int yBox = (int)(yIndex / BOX_SIZE);
 
@@ -210,7 +215,7 @@ public class Sudoku {
      * @return int[2] (xIndex, yIndex) index för första
      * tomma elementet. Om inget tomt element existerar returneras (-1,-1)
      */
-    private static int[] emptyElement() {
+    public int[] emptyElement() {
         int[] element = new int[2];
 
         for (int i = 0; i < SIZE; i++) {
@@ -239,53 +244,40 @@ public class Sudoku {
      * alla element uppfyller de tre kriterierna
      * @return boolean true om löst, false annars.
      */
-    private static boolean solved() {
-        int count;
+    public boolean solved() {
         int[] element = new int[2];
 
         element = this.emptyElement();
 
-        if (element[0] == -1) {
+        if (element[0] != -1) {
           return false;
         }
 
         // testar raderna
         for (int xIndex = 0; xIndex < SIZE; xIndex++) {
-            count = 0;
             for (int number = 1; number < SIZE + 1; number++) {
-                if (this.isInRow(xIndex,number)) {
-                    count++;
+                if (!this.isInRow(xIndex,number)) {
+                    return false;
                 }
-            }
-            if (count != SIZE) {
-                return false;
             }
         }
 
         // testar kolonnerna
         for (int yIndex = 0; yIndex < SIZE; yIndex++) {
-            count = 0;
             for (int number = 1; number < SIZE + 1; number++) {
-                if (this.isInRow(yIndex,number)) {
-                    count++;
+                if (!this.isInRow(yIndex,number)) {
+                    return false;
                 }
-            }
-            if (count != SIZE) {
-                return false;
             }
         }
 
         // testar boxerna
         for (int xIndex = 0; xIndex < SIZE; xIndex++) {
             for (int yIndex = 0; yIndex < SIZE; yIndex++) {
-                count = 0;
                 for (int number = 1; number < SIZE + 1; number++) {
-                    if(this.isInBox(xIndex, yIndex, number)) {
-                        count++;
+                    if(!this.isInBox(xIndex, yIndex, number)) {
+                        return false;
                     }
-                }
-                if (count != SIZE) {
-                    return false;
                 }
             }
         }
@@ -302,8 +294,13 @@ public class Sudoku {
      * @param number värde som testas för insättning i elementet
      * @return boolean true om legalt drag, false annars.
      */
-    private boolean isLegal(int xIndex, int yIndex, int number) {
-        return (this.legalNumberInRow(xIndex,yIndex,number) && this.legalNumberInCol(xIndex,yIndex,number) && this.legalNumberInBox(xIndex,yIndex,number));
+    public boolean isLegal(int xIndex, int yIndex, int number) {
+        if (xIndex == -1 || yIndex == -1) {
+            return false;
+        }
+        return (!this.isInRow(xIndex,number) && 
+                !this.isInCol(yIndex,number) && 
+                !this.isInBox(xIndex,yIndex,number));
     }
 
     /**
@@ -330,9 +327,9 @@ public class Sudoku {
      * löser this sudoku
      * @return Sudoku som förhoppningsvist är löst
      */
-    private Sudoku solve() {
-
-      if (this.solved()) {
+    public Sudoku solve() {
+        
+      if (!this.solved()) {
           int[] element = this.emptyElement();
           for (int guess = 1; guess < SIZE + 1; guess++) {
               if (this.isLegal(element[0],element[1],guess)) {
@@ -350,15 +347,16 @@ public class Sudoku {
      * @param objekt den sudoku som skall lösas.
      * @return Sudoku som förhoppningsvist är löst
      */
-    private static Sudoku solve(Sudoku object) {
-
-
-      if (this.solved()) {
+    public static Sudoku solve(Sudoku object) {
+        
+      if (!object.solved()) {
           int[] element = object.emptyElement();
           for (int guess = 1; guess < SIZE + 1; guess++) {
+              //System.out.println("" + guess);
               if (object.isLegal(element[0],element[1],guess)) {
                   System.out.println("xIndex = " + element[0] + ", yIndex = " + element[1] + ", guess = " + guess);
                   Sudoku inter = new Sudoku(object.addElement(element[0],element[1],guess));
+                  System.out.println(inter.toString());
                   object = solve(inter);
               }
           }
@@ -396,20 +394,23 @@ public class Sudoku {
     public static void main(String[] args) {
 
 
+        //Sudoku sol = new Sudoku(GRID1_SOLUTION);
+        //Sudoku foo = new Sudoku(GRID2_TO_SOLVE);
+        
+        Sudoku foo1 = new Sudoku(EVAL1);
+        
+        //System.out.println(sol.toString());
+        //System.out.print(foo.toString());
+        System.out.println(foo1.toString());
 
-        Sudoku sol = new Sudoku(GRID1_SOLUTION);
-        Sudoku foo = new Sudoku(GRID1_TO_SOLVE);
-
-
-
-        System.out.print(sol.toString());
-        System.out.print(foo.toString());
-
-        Sudoku solved = solve(foo);
-
+        //Sudoku solved = solve(foo);
+        Sudoku solved1 = solve(foo1);
+        
         System.out.println("Solution:");
 
-        System.out.print(solved.toString());
-        System.out.print(foo.solved());
+        //System.out.print(solved.toString());
+        System.out.println(solved1.toString());
+        //System.out.println(sol.solved());
+        //System.out.println(foo.solved());
     }
 }
