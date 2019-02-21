@@ -64,6 +64,17 @@ public class Sudoku {
         {3,2,8,5,6,1,7,4,9},
     };
 
+    public static int[][] EV = {
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,1,2,3,0,0,0},
+        {0,0,0,4,5,6,0,0,0},
+        {0,0,0,7,8,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0},
+    };
 
     public static int[][] EMPTY = {
         {0,0,0,0,0,0,0,0,0},
@@ -300,7 +311,9 @@ public class Sudoku {
         if (xIndex == -1 || yIndex == -1) {
             return false;
         }
-        return (!this.isInRow(xIndex, number) &&
+
+        //return (this.legalNumberInRow(xIndex, yIndex) && this.legalNumberInCol(xIndex, yIndex) && this.legalNumberInBox(xIndex, yIndex));
+         return (!this.isInRow(xIndex, number) &&
                 !this.isInCol(yIndex, number) &&
                 !this.isInBox(xIndex, yIndex, number));
     }
@@ -433,6 +446,9 @@ public class Sudoku {
         Sudoku foo1_sol = new Sudoku(GRID1_SOLUTION);
 
         Sudoku foo2 = new Sudoku(EMPTY);
+        Sudoku foo3 = new Sudoku(EV);
+
+    //    System.out.println("" + foo3.isInBox(3,3,1));
 
         evaluater(foo, foo_sol);
 
