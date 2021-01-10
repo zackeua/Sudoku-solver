@@ -29,6 +29,19 @@
         {0,0,1,9,0,4,5,7,0},
     };
 
+    public static int[][] EXGRID_TO_SOLVE = {
+        {9,2,3,1,0,0,0,0,5},
+        {4,7,5,0,9,0,2,0,1},
+        {8,1,6,0,4,0,0,0,0},
+        {0,0,0,0,8,0,0,0,0},
+        {0,0,0,7,0,0,0,0,0},
+        {0,0,0,0,2,6,0,0,9},
+        {2,0,0,3,0,0,0,0,6},
+        {0,0,0,2,0,0,9,0,0},
+        {0,0,1,9,0,4,5,7,0},
+    };
+
+
     public static int[][] GRID_SOLUTION = {
         {9,3,4,1,7,2,6,8,5},
         {7,6,5,8,9,3,2,4,1},
@@ -409,20 +422,20 @@
         Sudoku foo = new Sudoku(GRID_TO_SOLVE);
         Sudoku foo_sol = new Sudoku(GRID_SOLUTION);
 
-        Sudoku foo1 = new Sudoku(GRID1_TO_SOLVE);
-        Sudoku foo1_sol = new Sudoku(GRID1_SOLUTION);
+        //Sudoku foo1 = new Sudoku(GRID1_TO_SOLVE);
+        //Sudoku foo1_sol = new Sudoku(GRID1_SOLUTION);
 
-        Sudoku foo2 = new Sudoku(EMPTY);
-        Sudoku foo2_sol = new Sudoku(EMPTY_SOLUTION);
+        //Sudoku foo2 = new Sudoku(EMPTY);
+        //Sudoku foo2_sol = new Sudoku(EMPTY_SOLUTION);
 
-        Sudoku foo3 = new Sudoku(EV);
+        //Sudoku foo3 = new Sudoku(EV);
 
         //System.out.println(foo2.getEmptyElement()[0] + " " + foo2.getEmptyElement()[1]);
         evaluater(foo, foo_sol);
 
-        evaluater(foo1, foo1_sol);
+        //evaluater(foo1, foo1_sol);
 
-        evaluater(foo2);
+        //evaluater(foo2);
 
     }
 }
