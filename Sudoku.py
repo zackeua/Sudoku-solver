@@ -1,27 +1,28 @@
-BOX_SIZE = 3
-SIZE = BOX_SIZE * BOX_SIZE
-EMPTY_ELEMENT = None
+from math import sqrt
+
 class Sudoku:
 
     def __init__(self, grid = None):
 
-        self.grid = [[None for _ in range(SIZE)] for _ in range(SIZE)]
         if grid != None:
-            self.grid = [[number if number != 0 else None for number in row] for row in grid]
-            '''
-            for i in range(SIZE):
-                for j in range(SIZE):
-                    if list[i][j] != 0:
-                        self.grid[i][j] = list[i][j]
-            '''
+            size = len(grid)
+            assert sqrt(size) == int(sqrt(size))
+            self._size = size
+            self._box_size = int(sqrt(size))
+            self._grid = [[number if number != 0 else None for number in row] for row in grid]
+        else:
+            self._size = 9
+            self._box_size = 3
+            self._grid = [[None for _ in range(self._size)] for _ in range(self._size)]
+        #self._possible = [[[] for _ in row] for row in self._grid]
 
     def __str__(self):
         s = ""
-        for rowIndex, row in enumerate(self.grid):
-            if rowIndex%BOX_SIZE == 0:
+        for rowIndex, row in enumerate(self._grid):
+            if rowIndex%self._box_size == 0:
                 s = s + '\n'
             for elementIndex, element in enumerate(row):
-                if elementIndex%BOX_SIZE == 0:
+                if elementIndex%self._box_size == 0:
                     s = s + " "
                 s = s + str(element or "0") + " "
             s = s + '\n'
@@ -31,20 +32,14 @@ class Sudoku:
     def isInRow(self, xIndex, number):
         """Checks if a number is in a given Row"""
         #return number in self.grid[xIndex]
-        return number in [value for value in self.grid[xIndex][:]]
-        '''
-        for i in range(SIZE):
-            if self.grid[xIndex][i] == number:
-                return True
-        return False
-        '''
+        return number in [value for value in self._grid[xIndex][:]]
 
     def isInCol(self, yIndex, number):
         """Checks if a number is in a given Column"""
         #return number in self.grid[:][yIndex]
         #return number in [value for value in self.grid[:][yIndex]]
-        for i in range(SIZE):
-            if self.grid[i][yIndex] == number:
+        for i in range(self._size):
+            if self._grid[i][yIndex] == number:
                 return True
         return False
 
@@ -53,18 +48,51 @@ class Sudoku:
     def isInBox(self, xIndex, yIndex, number):
         """Checks if a nmber is in a given box"""
         #return number in [a[i] for a in self.grid[xBox:xBox+BOX_SIZE] for i in range(BOX_SIZE*yBox,BOX_SIZE*yBox+BOX_SIZE)]
-        xBox = xIndex//BOX_SIZE
-        yBox = yIndex//BOX_SIZE
-        for i in range(BOX_SIZE * xBox, BOX_SIZE * xBox + BOX_SIZE):
-            for j in range(BOX_SIZE * yBox, BOX_SIZE * yBox + BOX_SIZE):
-                if self.grid[i][j] == number:
+        xBox = xIndex//self._box_size
+        yBox = yIndex//self._box_size
+        for i in range(self._box_size * xBox, self._box_size * xBox + self._box_size):
+            for j in range(self._box_size * yBox, self._box_size * yBox + self._box_size):
+                if self._grid[i][j] == number:
                     return True
         return False
 
+    def get_possible(self):
+        possible = []
+        for i, row in enumerate(self._grid):
+            for j, element in enumerate(row):
+                #self._possible[i][j] = []
+                temp = []
+                if element == None: # empty
+                    for num in range(1, self._size +1):
+                        if self.isLegal([i, j], num):
+                            #self._possible[i][j].append(num)
+                            temp.append(num)
+                    if len(temp) == 1:
+                        possible.append([i, j, temp[0]])
+        return possible
 
+    def update_possible(self):
+        possible = self.get_possible()
+        updated = []
+        flag = False
+        while (len(possible) > 0):
+            for t in possible:
+                try:
+                    self._grid[t[0]][t[1]] = t[2] # self._possible[t[0]][t[1]][0]
+                    updated.append(t)
+                    possible = self.get_possible()
+                except:
+                    flag = True
+        if flag:
+            print('reset')
+            for tup in updated:
+                self._grid[tup[0]][tup[1]] = None
+
+
+    
     def getEmptyElement(self):
         """Return the first empty element in the grid, if no element is empty, return None"""
-        for i, row in enumerate(self.grid):
+        for i, row in enumerate(self._grid):
             for j, element in enumerate(row):
                 if element == None:
                     return [i, j]
@@ -76,14 +104,14 @@ class Sudoku:
         if full != None: # if sudoku is not full it is not solved
             return False
 
-        for number in range(1, SIZE + 1):
-            for position in range(SIZE):
+        for number in range(1, self._size + 1):
+            for position in range(self._size):
                 if not (self.isInRow(position, number)):
                     return False
                 if not (self.isInCol(position, number)):
                     return False
-            for xIndex in range(0, SIZE, BOX_SIZE):
-                for yIndex in range(0, SIZE, BOX_SIZE):
+            for xIndex in range(0, self._size, self._box_size):
+                for yIndex in range(0, self._size, self._box_size):
                     if  not (self.isInBox(xIndex, yIndex, number)):
                         return False
         return True
@@ -102,7 +130,7 @@ class Sudoku:
 
     def addElement(self, index, number):
         """Return a new sudoku with the number inserted at a given valid index"""
-        result = Sudoku(self.grid)
+        result = Sudoku(self._grid)
         if index != None:
             result.grid[index[0]][index[1]] = number
         return result
@@ -112,16 +140,19 @@ class Sudoku:
         """Solves the sudoku"""
         if self.solved():
             return self
+        
+        #self.update_possible()
+        #print('backtrack')
         index = self.getEmptyElement()
-        for guess in range(1, SIZE + 1):
+        for guess in range(1, self._size + 1):
             if self.isLegal(index, guess):
                 #temp = self.addElement(index, guess)
-                self.grid[index[0]][index[1]] = guess
+                self._grid[index[0]][index[1]] = guess
                 self = self.solve()
                 if self.solved():
                     return self
                 else:
-                    self.grid[index[0]][index[1]] = None
+                    self._grid[index[0]][index[1]] = None
         return self
 
 def main():
@@ -157,8 +188,19 @@ def main():
              [0,0,0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0,0,0]]
-
+    """
+    empty = [[0,2,0, 0,4,0, 0,7,0],
+                  [1,0,0, 0,2,0, 0,0,0],
+                  [3,0,4, 8,9,0, 0,0,0],
+                  [0,8,0, 0,0,9, 0,0,1],
+                  [4,3,0, 0,6,2, 0,0,5],
+                  [9,0,0, 5,3,8, 4,0,0],
+                  [0,0,5, 0,0,3, 0,2,4],
+                  [0,0,0, 0,0,7, 0,1,0],
+                  [0,0,1, 0,0,0,0,0,6]]
+    """
     sudo = Sudoku(Grid)
+    #sudo = Sudoku(empty)
 
     print(sudo)
 
