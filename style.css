@@ -1,0 +1,71 @@
+
+
+:root {
+    font-size: 62.5%;
+    --board-size-length: 80rem;
+    --board-element-size: 8.88rem;
+    --font-size: 6rem;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    color: #000000;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+table {
+    background-color: white;
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: black;
+    border-width: 0.5rem;
+}
+
+
+td {
+    border-style: solid;
+    border-color: black;
+    border-collapse: collapse;
+    padding: 0%;
+    width: fit-content;
+    height: fit-content;
+}
+
+.element {
+    height: var(--board-element-size);
+    width: var(--board-element-size);
+    padding: 0;
+    margin: 0;
+    border-style: none;
+    font-size: var(--font-size);
+    text-align: center;
+    text-indent: 0px;
+    overflow: hidden;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+
+tr:nth-child(3) td {
+    border-bottom-width: 0.5rem;
+}
+
+tr:nth-child(6) td {
+    border-bottom-width: 0.5rem;
+}
+
+td:nth-child(3) {
+    border-right-width: 0.5rem;    
+}
+
+td:nth-child(6) {
+    border-right-width: 0.5rem;    
+}

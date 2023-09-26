@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zackeus Sudoku solver</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <script defer type="module" src="https://pyscript.net/snapshots/2023.09.1.RC1/core.js"></script>
+</head>
+<body>
+    <div id="sudoku-container">
+        <table>
+            
+        </table>
+        <button id="solve" py-click="solve_sudoku">Solve</button>
+    </div>
+    <script type="py" src="./main.py" config="./sudoku.toml"></script>
+</body>
+</html>
