@@ -3,13 +3,13 @@ function isNumeric(str) {
   }
 
 function updateText(element) {
-    var value = element.innerText;
+    var value = element.value;
     if (value.length > 1) {
-        element.innerText = element.innerText[0];
+        element.value = element.value[0];
     }
-    value = element.innerText;
+    value = element.value;
     if (!isNumeric(value) || (value < 1 || value > 9)) {
-        element.innerText = '';
+        element.value = '';
     }
 
 }
@@ -18,9 +18,15 @@ function generateTableRow() {
     const tr = document.createElement('tr');
     for (let index = 0; index < 9; index++) {
         const td = document.createElement('td');
-        const element = document.createElement('div');
-        element.setAttribute('contenteditable', true)
+        const element = document.createElement('input');
         element.classList.add('element');
+        element.setAttribute('type', 'number');
+        element.setAttribute('min', '1');
+        element.setAttribute('max', '9');
+
+
+        //element.setAttribute('maxlength', '1');
+        //element.setAttribute('pattern', '[1-9]');
         element.addEventListener('blur' , () => {  
             updateText(element);
         })
@@ -40,29 +46,11 @@ function generateTable() {
     }
 }
 
-function makeBold() {
-    const elements = document.getElementsByClassName('element');
-
-    for (var i = 0; i < elements.length; i++) {
-        const element = elements[i];
-        if (element.innerText) {
-            element.classList.add('bold');
-            element.setAttribute('contenteditable', false);
-        }
-
-    }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
 
 
     generateTable();
-
-    const solveButton = document.getElementById('solve');
-    
-    solveButton.addEventListener('click', () => {
-        makeBold();
-    })
 
 })
 

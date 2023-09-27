@@ -54,6 +54,16 @@ td {
 }
 
 
+.hidden {
+    display: none;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 tr:nth-child(3) td {
     border-bottom-width: 0.5rem;
 }
