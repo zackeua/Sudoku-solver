@@ -51,11 +51,16 @@ td {
 
 .bold {
     font-weight: bold;
+    background-color: cornflowerblue;
 }
 
 
 .hidden {
     display: none;
+}
+
+.blue {
+    background-color: cornflowerblue;
 }
 
 input::-webkit-inner-spin-button,

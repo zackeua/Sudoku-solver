@@ -135,6 +135,35 @@ class Sudoku:
             result.grid[index[0]][index[1]] = number
         return result
 
+    def is_valid(self):
+        for line in self._grid:
+            for number in range(1, self._size + 1):
+                if line.count(number) > 1:
+                    return False
+        def flip_axes(grid):
+            data = []
+            for x in zip(*grid):
+                data.append(x)
+            return data
+        
+        for line in flip_axes(self._grid):
+            for number in range(1, self._size + 1):
+                if line.count(number) > 1:
+                    return False
+
+        def get_box(grid):
+            data = []
+            for i in [0, 3, 6]:
+                for j in [0, 3, 6]:
+                    data.append([grid[i+x][j+y] for x in [0, 1, 2] for y in [0, 1, 2]])
+            return data
+
+        for line in get_box(self._grid):
+            for number in range(1, self._size + 1):
+                if line.count(number) > 1:
+                    return False
+        
+        return True
 
     def solve(self):
         """Solves the sudoku"""
