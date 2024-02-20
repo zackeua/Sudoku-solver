@@ -37,6 +37,11 @@ td {
     height: fit-content;
 }
 
+button {
+    margin-top: 2rem;
+    font-size: 3rem;
+}
+
 .element {
     height: var(--board-element-size);
     width: var(--board-element-size);
