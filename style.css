@@ -64,9 +64,6 @@ button {
     display: none;
 }
 
-.blue {
-    background-color: cornflowerblue;
-}
 
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
@@ -88,4 +85,8 @@ td:nth-child(3) {
 
 td:nth-child(6) {
     border-right-width: 0.5rem;    
+}
+
+.element:focus {
+    background-color: cornflowerblue;
 }

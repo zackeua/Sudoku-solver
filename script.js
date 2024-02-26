@@ -15,14 +15,6 @@ function updateText(element) {
 }
 
 
-function makeBlue(element) {
-    element.classList.add('blue');
-}
-
-function removeBlue(element) {
-    element.classList.remove('blue');
-}
-
 function generateTableRow() {
     const tr = document.createElement('tr');
     for (let index = 0; index < 9; index++) {
@@ -38,12 +30,8 @@ function generateTableRow() {
         //element.setAttribute('pattern', '[1-9]');
         element.addEventListener('blur' , () => {  
             updateText(element);
-            removeBlue(element);
         })
 
-        element.addEventListener('focus', () => {
-            makeBlue(element);
-        })
         td.appendChild(element);
         tr.appendChild(td);
     }
